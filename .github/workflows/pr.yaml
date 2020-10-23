@@ -17,7 +17,19 @@ jobs:
         path: ${{ github.event_path }}
   
   comment:
+    if: contains(github.event.comment.body, '/hello')
     runs-on: ubuntu-latest
     steps:
     - name: Copy Repository Contents
       uses: actions/checkout@master
+    - uses: actions/github-script@v3
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+            console.log(context)
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Thanks for reporting!'
+            })
