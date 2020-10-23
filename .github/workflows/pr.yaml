@@ -1,0 +1,19 @@
+name: CI
+on: issue_comment 
+
+jobs:     
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: see payload
+      run: echo "$PAYLOAD"
+      env:
+        PAYLOAD: ${{ toJSON(github.event) }}
+   - uses: actions/upload-artifact@v2
+     with:
+       name: my-artifact
+       path: path/to/artifact/world.txt
+  
+    - name: Copy Repository Contents
+      uses: actions/checkout@master
